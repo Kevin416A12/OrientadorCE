@@ -66,7 +66,7 @@ afinidad(educacion, enseñar).
 afinidad(educacion, personas).
 afinidad(educacion, comunicacion).
 afinidad(educacion, paciencia).
-afinidad(educacion, ayudar)
+afinidad(educacion, ayudar).
 
 afinidad(ingenieria_civil, construccion).
 afinidad(ingenieria_civil, matematicas).
