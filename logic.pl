@@ -116,6 +116,24 @@ mostrar_recomendacion :-
     write(Carrera), nl.
 
 
+% Explicar la recomendación al usuario mostrando las afinidades que coinciden con sus gustos
+explicar_recomendacion :-
+    recomendar(Carrera),
+    write('Te recomiendo estudiar: '),
+    write(Carrera), nl,
+    write('Porque coincide con estas preferencias: '), nl,
+    mostrar_afinidades_coincidentes(Carrera).
+
+
+mostrar_afinidades_coincidentes(Carrera) :-
+    gusta(X),
+    afinidad(Carrera, X),
+    write('- '),
+    write(X), nl,
+    fail.
+
+mostrar_afinidades_coincidentes(_).
+
 
 % Debug: Mostrar puntajes de todas las profesiones
 mostrar_puntajes :-
