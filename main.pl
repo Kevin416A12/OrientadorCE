@@ -12,7 +12,7 @@ iniciar :-
     preguntar(comunicacion),
     preguntar(construccion),
     preguntar(numeros),
-    mostrar_recomendacion.
+    explicar_recomendacion.
 
 preguntar(X) :-
     write('Te gusta '), write(X), write('? (si/no): '),
@@ -24,3 +24,7 @@ procesar_respuesta(si, X) :-
 
 procesar_respuesta(no, X) :-
     assert(no_gusta(X)).
+
+procesar_respuesta(_, X) :-
+    write('No entendi la respuesta. Responde si o no.'), nl,
+    preguntar(X).
