@@ -62,7 +62,7 @@ afinidad(diseno_grafico, tecnologia).
 afinidad(diseno_grafico, comunicacion_visual).
 afinidad(diseno_grafico, diseno).
 
-afinidad(educacion, enseñar).
+afinidad(educacion, ensenar).
 afinidad(educacion, personas).
 afinidad(educacion, comunicacion).
 afinidad(educacion, paciencia).

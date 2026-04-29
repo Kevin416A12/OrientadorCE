@@ -1,45 +1,45 @@
 :- consult('bd.pl').
 
-% Hechos dinamicos para almacenar las preferencias del usuario
+% ============================
+% Hechos dinámicos (respuestas del usuario)
+% ============================
+
 :- dynamic gusta/1.
 :- dynamic no_gusta/1.
 
-% Limpiar respouestas
+
+% ============================
+% LIMPIAR RESPUESTAS
+% ============================
+
 limpiar :-
     retractall(gusta(_)),
     retractall(no_gusta(_)).
 
 
-% Puntaje de una profesión basado en las afinidades y antagonias del usuario
-
+% ============================
+% PUNTAJE DE UNA PROFESIÓN
+% ============================
 
 puntaje_profesion(Profesion, Puntaje) :-
-    findall(Puntos, puntos_respuesta(Profesion, Puntos), ListaPuntos),
-    sum_list(ListaPuntos, Puntaje).
+    findall(1, (gusta(X), afinidad(Profesion, X)), Afinidades),
+    length(Afinidades, Positivos),
+
+    findall(1, (no_gusta(X), afinidad(Profesion, X)), Negativos1),
+    findall(1, (gusta(X), antagonia(Profesion, X)), Negativos2),
+
+    length(Negativos1, N1),
+    length(Negativos2, N2),
+
+    Negativos is N1 + N2,
+
+    Puntaje is Positivos - Negativos.
 
 
-% Una afinidad que al usuario le gusta suma 2
-puntos_respuesta(Profesion, 2) :-
-    gusta(X),
-    afinidad(Profesion, X).
+% ============================
+% EVALUAR TODAS LAS PROFESIONES
+% ============================
 
-% Una afinidad que al usuario NO le gusta resta
-puntos_respuesta(Profesion, -2) :-
-    no_gusta(X),
-    afinidad(Profesion, X).
-
-% Una antagonia que al usuario sí le gusta resta 3
-puntos_respuesta(Profesion, -3) :-
-    gusta(X),
-    antagonia(Profesion, X).
-
-% Una antagonia que al usuario NO le gusta suma 1
-puntos_respuesta(Profesion, 1) :-
-    no_gusta(X),
-    antagonia(Profesion, X).
-
-
-% Evaluar todas las profesiones 
 evaluar_profesiones(Lista) :-
     findall(
         Puntaje-Profesion,
@@ -51,7 +51,10 @@ evaluar_profesiones(Lista) :-
     ).
 
 
-% Mejor profecion basada en el puntaje
+% ============================
+% MEJOR PROFESIÓN
+% ============================
+
 mejor([P-C], C, P).
 
 mejor([P1-C1, P2-C2 | Resto], MejorC, MejorP) :-
@@ -62,53 +65,18 @@ mejor([P1-C1, P2-C2 | Resto], MejorC, MejorP) :-
     ).
 
 
-% Recomendar la mejor carrera basada en el puntaje
+% ============================
+% RECOMENDAR
+% ============================
+
 recomendar(Carrera) :-
     evaluar_profesiones(Lista),
-    mejor(Lista, _, MejorPuntaje),
-    profesiones_empatadas(MejorPuntaje, Empatadas),
-    desempatar(Empatadas, Carrera).
-
-profesiones_empatadas(Puntaje, Empatadas) :-
-    evaluar_profesiones(Lista),
-    findall(
-        Carrera,
-        member(Puntaje-Carrera, Lista),
-        Empatadas
-    ).
+    mejor(Lista, Carrera, _).
 
 
-
-% Desempate entre carreras 
-desempatar([Carrera], Carrera).
-
-desempatar(Empatadas, MejorCarrera) :-
-    findall(
-        Coincidencias-Carrera,
-        (
-            member(Carrera, Empatadas),
-            contar_afinidades_positivas(Carrera, Coincidencias)
-        ),
-        Lista
-    ),
-    sort(Lista, Ordenada),
-    reverse(Ordenada, [_-MejorCarrera | _]).
-
-
-contar_afinidades_positivas(Carrera, Conteo) :-
-    findall(
-        1,
-        (
-            gusta(X),
-            afinidad(Carrera, X)
-        ),
-        Lista
-    ),
-    length(Lista, Conteo).
-
-
-
-% Mostrar recomendación al usuario
+% ============================
+% MOSTRAR RESULTADO
+% ============================
 
 mostrar_recomendacion :-
     recomendar(Carrera),
@@ -116,26 +84,10 @@ mostrar_recomendacion :-
     write(Carrera), nl.
 
 
-% Explicar la recomendación al usuario mostrando las afinidades que coinciden con sus gustos
-explicar_recomendacion :-
-    recomendar(Carrera),
-    write('Te recomiendo estudiar: '),
-    write(Carrera), nl,
-    write('Porque coincide con estas preferencias: '), nl,
-    mostrar_afinidades_coincidentes(Carrera).
+% ============================
+% DEBUG (para defensa)
+% ============================
 
-
-mostrar_afinidades_coincidentes(Carrera) :-
-    gusta(X),
-    afinidad(Carrera, X),
-    write('- '),
-    write(X), nl,
-    fail.
-
-mostrar_afinidades_coincidentes(_).
-
-
-% Debug: Mostrar puntajes de todas las profesiones
 mostrar_puntajes :-
     evaluar_profesiones(L),
     write(L), nl.
