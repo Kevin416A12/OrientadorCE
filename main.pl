@@ -1,7 +1,9 @@
 :- consult('parser.pl').
 
 iniciar :-
-    write('=============================='), nl,
-    write(' ORIENTADOR VOCACIONAL IA '), nl,
-    write('=============================='), nl,
+    nl,
+    write('Hola, soy OrientadorCE.'), nl,
+    write('Escribe tus gustos o rechazos en lenguaje natural.'), nl,
+    write('Ejemplo: me gusta tecnologia y matematicas pero no personas'), nl,
+    nl,
     procesar_texto.
