@@ -1,46 +1,57 @@
-<programa> ::= <base_conocimiento> <hechos_usuario> <reglas> <consulta>
+# Gramática BNF - Orientador Vocacional CE
 
-<base_conocimiento> ::= <hecho_profesion> | <base_conocimiento> <hecho_profesion>
-                      | <hecho_afinidad> | <base_conocimiento> <hecho_afinidad>
-                      | <hecho_antagonia> | <base_conocimiento> <hecho_antagonia>
+<entrevista> ::= <pregunta> <respuesta>
 
-<hecho_profesion> ::= profesion(<identificador>).
+<pregunta> ::= "Te gustan las personas?"
+             | "Te gusta la salud?"
+             | "Te gusta la tecnologia?"
+             | "Te gustan las matematicas?"
+             | "Te gusta programacion?"
+             | "Te gusta resolver problemas?"
+             | "Te gustan los negocios?"
 
-<hecho_afinidad> ::= afinidad(<identificador>, <preferencia>).
+<respuesta> ::= <respuesta_simple>
+              | <respuesta_simple> <conector> <respuesta>
 
-<hecho_antagonia> ::= antagonia(<identificador>, <preferencia>).
+<respuesta_simple> ::= <afirmacion>
+                     | <negacion>
 
-<hechos_usuario> ::= <hecho_gusta> | <hechos_usuario> <hecho_gusta>
-                   | <hecho_no_gusta> | <hechos_usuario> <hecho_no_gusta>
+<afirmacion> ::= "si"
+               | "sí"
+               | "si" <extra_afirmacion>
+               | "sí" <extra_afirmacion>
+               | "me gusta" <preferencia>
+               | "me gustan" <articulo> <preferencia>
 
-<hecho_gusta> ::= gusta(<preferencia>).
+<extra_afirmacion> ::= ε
+                     | "y" <afirmacion>
+                     | "tambien" <afirmacion>
+                     | "ademas" <afirmacion>
 
-<hecho_no_gusta> ::= no_gusta(<preferencia>).
+<conector> ::= "pero"
+             | "y"
 
-<reglas> ::= <regla_puntaje> <regla_evaluar> <regla_mejor> <regla_recomendar>
+<afirmacion> ::= "si"
+               | "sí"
+               | "me gusta" <preferencia>
+               | "me gustan" <articulo> <preferencia>
 
-<regla_puntaje> ::= puntaje_profesion(<identificador>, <numero>).
+<negacion> ::= "no"
+             | "no me gusta" <preferencia>
+             | "odio" <preferencia>
 
-<regla_evaluar> ::= evaluar_profesiones(<lista>).
+<articulo> ::= "las"
+             | "los"
+             | "la"
+             | "el"
+             | ε
 
-<regla_mejor> ::= mejor(<lista>, <numero>, <identificador>).
-
-<regla_recomendar> ::= recomendar(<identificador>).
-
-<consulta> ::= ?- recomendar(<variable>).
-             | ?- mostrar_recomendacion.
-             | ?- mostrar_puntajes.
-
-<identificador> ::= <letra> | <identificador> <letra> | <identificador> "_"
-<preferencia> ::= <identificador>
-<variable> ::= <letra_mayuscula> | <variable> <letra>
-
-<numero> ::= <digito> | <numero> <digito>
-<lista> ::= [] | [<elementos>]
-<elementos> ::= <elemento> | <elemento> , <elementos>
-
-<elemento> ::= <numero>-<identificador>
-
-<letra> ::= a | b | ... | z
-<letra_mayuscula> ::= A | B | ... | Z
-<digito> ::= 0 | 1 | ... | 9
+<preferencia> ::= "personas"
+                | "salud"
+                | "tecnologia"
+                | "matematicas"
+                | "programacion"
+                | "resolver problemas"
+                | "negocios"
+                | "creatividad"
+                | "diseno"

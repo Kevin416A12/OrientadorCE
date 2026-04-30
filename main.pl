@@ -1,30 +1,27 @@
-:- consult('logic.pl').
+:- consult('parser_dcg.pl').
 
 iniciar :-
     limpiar,
-    preguntar(tecnologia),
-    preguntar(matematicas),
-    preguntar(personas),
-    preguntar(creatividad),
-    preguntar(salud),
-    preguntar(negocios),
-    preguntar(arte),
-    preguntar(comunicacion),
-    preguntar(construccion),
-    preguntar(numeros),
-    explicar_recomendacion.
+    nl,
+    write('Hola, soy OrientadorCE.'), nl,
+    write('Voy a hacerte algunas preguntas sobre tus gustos.'), nl,
+    write('Responde con frases como: me gusta tecnologia, no me gusta matematicas.'), nl,
+    nl,
 
-preguntar(X) :-
-    write('Te gusta '), write(X), write('? (si/no): '),
-    read(Respuesta),
-    procesar_respuesta(Respuesta, X).
+    preguntar(tecnologia, 'Te gusta la tecnologia?'),
+    preguntar(matematicas, 'Te gustan las matematicas?'),
+    preguntar(programacion, 'Te gusta la programacion?'),
+    preguntar(resolver_problemas, 'Te gusta resolver problemas?'),
+    preguntar(personas, 'Te gustan las personas?'),
+    preguntar(salud, 'Te gusta la salud?'),
+    preguntar(creatividad, 'Te gusta la creatividad?'),
+    preguntar(negocios, 'Te gustan los negocios?'),
+    preguntar(arte, 'Te gusta el arte?'),
+    preguntar(numeros, 'Te gustan los numeros?'),
 
-procesar_respuesta(si, X) :-
-    assert(gusta(X)).
+    nl,
+    mostrar_recomendacion.
 
-procesar_respuesta(no, X) :-
-    assert(no_gusta(X)).
-
-procesar_respuesta(_, X) :-
-    write('No entendi la respuesta. Responde si o no.'), nl,
-    preguntar(X).
+preguntar(_, Pregunta) :-
+    write(Pregunta), nl,
+    procesar_respuesta.
