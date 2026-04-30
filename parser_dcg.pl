@@ -45,21 +45,39 @@ conector --> [y, tambien].
 conector --> [y, también].
 
 % ============================
-% AFIRMACIONES
+% AFIRMACIONES (TODO JUNTO)
 % ============================
 
-afirmacion --> [si].
-afirmacion --> [sí].
-
-afirmacion --> [si], extra_afirmacion.
-afirmacion --> [sí], extra_afirmacion.
+afirmacion -->
+    [si], afirmacion_con_contenido.
 
 afirmacion -->
-    [me], [gusta], preferencia(X),
+    [sí], afirmacion_con_contenido.
+
+afirmacion -->
+    [tambien], afirmacion_con_contenido.
+
+afirmacion -->
+    [también], afirmacion_con_contenido.
+
+afirmacion -->
+    afirmacion_con_contenido.
+
+
+afirmacion_con_contenido -->
+    [me], [gusta], modificador, articulo, preferencia(X),
     {assert_si_no_existe(gusta(X))}.
 
-afirmacion -->
-    [me], [gustan], articulo, preferencia(X),
+afirmacion_con_contenido -->
+    [me], [gustan], modificador, articulo, preferencia(X),
+    {assert_si_no_existe(gusta(X))}.
+
+afirmacion_con_contenido -->
+    [amo], modificador, articulo, preferencia(X),
+    {assert_si_no_existe(gusta(X))}.
+
+afirmacion_con_contenido -->
+    [disfruto], modificador, articulo, preferencia(X),
     {assert_si_no_existe(gusta(X))}.
 
 extra_afirmacion --> [].
@@ -71,18 +89,30 @@ extra_afirmacion --> [y], [tambien], afirmacion.
 extra_afirmacion --> [y], [también], afirmacion.
 
 % ============================
-% NEGACIONES
+% NEGACIONES (TODO JUNTO)
 % ============================
 
-negacion --> [no].
-negacion --> [no], extra_negacion.
+negacion -->
+    [no], negacion_con_contenido.
 
 negacion -->
-    [no], [me], [gusta], preferencia(X),
+    negacion_con_contenido.
+
+
+negacion_con_contenido -->
+    [me], [gusta], modificador, articulo, preferencia(X),
     {assert_si_no_existe(no_gusta(X))}.
 
-negacion -->
-    [odio], preferencia(X),
+negacion_con_contenido -->
+    [me], [gustan], modificador, articulo, preferencia(X),
+    {assert_si_no_existe(no_gusta(X))}.
+
+negacion_con_contenido -->
+    [odio], modificador, articulo, preferencia(X),
+    {assert_si_no_existe(no_gusta(X))}.
+
+negacion_con_contenido -->
+    [detesto], modificador, articulo, preferencia(X),
     {assert_si_no_existe(no_gusta(X))}.
 
 extra_negacion --> [].
@@ -100,7 +130,12 @@ articulo --> [].
 
 % ============================
 % PREFERENCIAS
-% ============================
+% ============================                  
+
+modificador --> [mucho].
+modificador --> [bastante].
+modificador --> [demasiado].
+modificador --> [].
 
 preferencia(personas) --> [personas].
 preferencia(salud) --> [salud].
@@ -110,6 +145,8 @@ preferencia(programacion) --> [programacion].
 preferencia(negocios) --> [negocios].
 preferencia(creatividad) --> [creatividad].
 preferencia(diseno) --> [diseno].
+preferencia(arte) --> [arte].
+preferencia(numeros) --> [numeros].
 preferencia(resolver_problemas) --> [resolver], [problemas].
 
 % ============================

@@ -1,41 +1,27 @@
 :- consult('parser_dcg.pl').
 
-% ============================
-% INICIO
-% ============================
-
 iniciar :-
     limpiar,
     nl,
-    write('=============================='), nl,
-    write(' ORIENTADOR VOCACIONAL '), nl,
-    write('=============================='), nl,
-    write('Responde de forma natural.'), nl,
+    write('Hola, soy OrientadorCE.'), nl,
+    write('Voy a hacerte algunas preguntas sobre tus gustos.'), nl,
+    write('Responde con frases como: me gusta tecnologia, no me gusta matematicas.'), nl,
     nl,
-    entrevista,
+
+    preguntar(tecnologia, 'Te gusta la tecnologia?'),
+    preguntar(matematicas, 'Te gustan las matematicas?'),
+    preguntar(programacion, 'Te gusta la programacion?'),
+    preguntar(resolver_problemas, 'Te gusta resolver problemas?'),
+    preguntar(personas, 'Te gustan las personas?'),
+    preguntar(salud, 'Te gusta la salud?'),
+    preguntar(creatividad, 'Te gusta la creatividad?'),
+    preguntar(negocios, 'Te gustan los negocios?'),
+    preguntar(arte, 'Te gusta el arte?'),
+    preguntar(numeros, 'Te gustan los numeros?'),
+
     nl,
     mostrar_recomendacion.
 
-% ============================
-% ENTREVISTA
-% ============================
-
-entrevista :-
-    preguntar('Te gustan las personas?'),
-    preguntar('Te gusta la salud?'),
-    preguntar('Te gusta la tecnologia?'),
-    preguntar('Te gustan las matematicas?'),
-    preguntar('Te gusta programacion?'),
-    preguntar('Te gusta resolver problemas?'),
-    preguntar('Te gustan los negocios?'),
-    preguntar('Te gusta creatividad?'),
-    preguntar('Te gusta diseno?').
-
-% ============================
-% HACER PREGUNTA
-% ============================
-
-preguntar(Texto) :-
-    nl,
-    write(Texto), nl,
+preguntar(_, Pregunta) :-
+    write(Pregunta), nl,
     procesar_respuesta.
